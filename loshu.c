@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 
 #define SIZE 3
 #define MAGIC_SUM 15
@@ -66,36 +68,39 @@ int isMagicSquare(int square[SIZE][SIZE]) {
   return 1;
 }
 
+void generateSquare(int square[SIZE][SIZE]) {
+  int nums[SIZE * SIZE] = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+
+  // Fisher-Yates Shuffle
+  for (int i = SIZE * SIZE - 1; i > 0; i--) {
+    int j = rand() % (i + 1);
+    int temp = nums[i];
+    nums[i] = nums[j];
+    nums[j] = temp;
+  }
+
+  // Puts the shuffled array into the grid
+  for (int i = 0; i < SIZE; i++) {
+    for (int j = 0; j < SIZE; j++) {
+      square[i][j] = nums[i * SIZE + j];
+    }
+  }
+}
+
 int main(void) {
-  int square1[SIZE][SIZE] = {{2, 7, 6}, {9, 5, 1}, {4, 3, 8}};
+  srand(time(NULL));
 
-  int square2[SIZE][SIZE] = {{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
+  int square[SIZE][SIZE];
+  int count = 0;
 
-  int square3[SIZE][SIZE] = {{2, 7, 6}, {9, 5, 1}, {4, 3, 7}};
+  do {
+    generateSquare(square);
+    count++;
+  } while (!isMagicSquare(square));
 
-  printf("Square 1:\n");
-  printSquare(square1);
-  if (isMagicSquare(square1)) {
-    printf("This is a Lo Shu Magic Square.\n\n");
-  } else {
-    printf("This is NOT a Lo Shu Magic Square.\n\n");
-  }
-
-  printf("Square 2:\n");
-  printSquare(square2);
-  if (isMagicSquare(square2)) {
-    printf("This is a Lo Shu Magic Square.\n\n");
-  } else {
-    printf("This is NOT a Lo Shu Magic Square.\n\n");
-  }
-
-  printf("Square 3:\n");
-  printSquare(square3);
-  if (isMagicSquare(square3)) {
-    printf("This is a Lo Shu Magic Square.\n\n");
-  } else {
-    printf("This is NOT a Lo Shu Magic Square.\n\n");
-  }
+  printf("Squares tested: %d\n", count);
+  printf("Lo Shu Magic Square found:\n");
+  printSquare(square);
 
   return 0;
 }
