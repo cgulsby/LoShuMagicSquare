@@ -5,9 +5,15 @@
 
 void printSquare(int square[SIZE][SIZE]) {
   for (int i = 0; i < SIZE; i++) {
+    printf("[");
     for (int j = 0; j < SIZE; j++) {
-      printf("%d ", square[i][j]);
+      if (j == 2) {
+        printf("%d", square[i][j]);
+      } else {
+        printf("%d ", square[i][j]);
+      }
     }
+    printf("]");
     printf("\n");
   }
 }
